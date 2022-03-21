@@ -1,0 +1,68 @@
+Tworzona jest jedna kolejka komunikatów po stronie klienta i serwera.
+
+Serwer na podstawie configu tworzy plik basic.txt, w którym nie ma haseł.
+Na podstawie pliku basic.txt:
+a) Serwer
+tworzy listę z zalogowanymi użytkownikami,
+tworzy również listę kto należy do grupy,
+tworzy listę z nickami danych użytkowników i nazwami grup
+b) Klient
+tworzy listę z nickami danych użytkowników i nazwami grup
+
+Struktura:
+
+struct buf_elem
+{
+long mtype;
+int first;
+int second;
+char mess[512];
+};
+
+p - liczba klientow
+g - liczba grup
+
+Serwer generalnie odbiera wiadomości od mtype 1.
+Jeśli użytkownik chce się zalogować to wymiana między klientem a serwerem opiera się na mtype 2 i 3, a przez to, że serwer w danym momencie przeprowadza proces logowania z jednym klientem, nie ma możliwości dostania złych wiadomości. 
+
+Mtype w zakresie (4,3+p) - służy do wysyłania przez serwer wiadomości do klientów od innych klientów
+Mtype w zakresie (4+p,3+2p) - służy do wysyłania wiadomości od serwera do klientów, potwierdzenia, wiadomości itd.
+
+Po zalogowaniu się klient dostaje własny numer, na podstawie którego będzie się identyfikować. Jest to numer w pliku basic+3, i jest potem używany do mtype(jeśli serwer chce coś wysłać) i first(w celu identyfikacji go przez serwer),
+
+first służy do określenia przez serwer kto wysyła wiadomości, 
+jest on niezmieniany przez serwer, aby po przesłaniu wiadomości klient też wiedział od kogo jest ta wiadomość
+
+second służy do określenia, jaką czynność chce wykonać klient
+1 - zalogować się
+2 - wylogować się
+3 - sprawdzić kto jest zalgowany
+(4,3+g) - zapisać się do danej grupy, 4 to 1 grupa, 5 to 2 grupa itd.
+(4+g,3+2g) - wypisać się z danej grupy, tak samo jak wyżej
+(4+2g,3+3g) - sprawdzić użytkowników należących do danej grupy
+(4+3h,3+4g) - napisanie wiadomości do danej grupy
+(4+4g,3+4g+p) - napisanie wiadomości do danej osoby
+
+second służy również do określenia przez klienta od kogo dostał wiadomość,
+0 - od użytkownika zapisanego w first
+(1+g) - od danej grupy i użytkownika z niej zapisanego w first
+
+Serwer po włączeniu czeka na wiadomości o mtype 1.
+Klient musi najpierw się zalogować, a następnie ma do wyboru następujące czynności.
+1.Wyslij wiadomosc do osoby
+	-do kogo?
+2.Wyslij wiadomosc do grupy
+	-do której grupy?
+3.Odbierz wiadomosc
+4.Inne
+	1.Wyloguj/zakoncz prace z programem
+	2.Sprawdz kto jest zalogowany
+	3.Zapisz do grupy
+		-której
+	4.Wypisz z grupy
+		-której
+	5.Sprawdz dostepne grupy
+	6.Sprawdz kto jest zapisany do grupy
+		-której
+Po wylogowaniu się klient znowu musi się zalogować. 
+

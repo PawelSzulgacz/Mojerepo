@@ -1,0 +1,12 @@
+o 1 jank 
+o 2 kiedrysiak 
+o 3 marianczello 
+o 4 ziemniakowski 
+o 5 maluszak 
+o 6 ziomek 
+o 7 jajkot 
+o 8 slepy 
+o 9 many 
+g 1 budowniczy 2 4 6
+g 2 miesniaki 3 1 5 2
+g 3 niewidomi 2 8

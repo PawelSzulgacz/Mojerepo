@@ -1,0 +1,12 @@
+o 1 jank 123 
+o 2 kiedrysiak 123 
+o 3 marianczello 123 
+o 4 ziemniakowski 321 
+o 5 maluszak 321 
+o 6 ziomek 4z3 
+o 7 jajkot 321 
+o 8 slepy 0404 
+o 9 many 444 
+g 1 budowniczy 2 4 6
+g 2 miesniaki 3 1 5 2
+g 3 niewidomi 2 8
